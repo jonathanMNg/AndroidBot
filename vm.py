@@ -141,7 +141,6 @@ def handle_tap(vm_index, coordinate):
     handle_run_command(vm_index, cmd)
 
 
-
 def handle_return(vm_index):
     cmd = f"{memu} -i {vm_index} adb shell input keyevent 4"
     handle_run_command(vm_index, cmd)

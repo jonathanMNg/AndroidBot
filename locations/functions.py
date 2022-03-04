@@ -14,7 +14,7 @@ functions = {
             }
         }
     },
-    'ui': {
+    'tab_bar': {
         'my_info': {
             'account': {
                 'coordinate': Coordinate(320, 600),
@@ -62,6 +62,22 @@ functions = {
                 }
             }
 
+        }
+    },
+    'map_view': {
+        'gather': {
+            'functions': {
+                'radar': Coordinate(370, 515),
+                'go': Coordinate(345, 602),
+                'gather': Coordinate(274, 293),
+                'set_out': Coordinate(330, 620)
+            },
+            'select_resource_type': {
+                'farm': Coordinate(48, 527),
+                'oil': Coordinate(110, 527),
+                'steel': Coordinate(165, 527),
+                'mineral': Coordinate(225, 527)
+            }
         }
     }
 }
