@@ -51,44 +51,48 @@ city_map = {
     },
     'troop_buildings': {
         'direction_from_default_view': {
-            'horizontal': 150,
+            'horizontal': 120,
             'vertical': -100
         },
         'buildings': {
             'camp_1': {
-                'coordinate': Coordinate(190, 300),
+                'coordinate': Coordinate(215, 265),
                 'functions': {
                     'recruit': {
-                        'coordinate': Coordinate(280, 350)
+                        'coordinate': Coordinate(305, 340)
                     }
-                }
+                },
+                'ui_helper': Coordinate(40, 140)
             },
             'camp_2': {
-                'coordinate': Coordinate(225, 360),
+                'coordinate': Coordinate(165, 345),
                 'functions': {
                     'recruit': {
-                        'coordinate': Coordinate(225, 410)
+                        'coordinate': Coordinate(240, 375)
                     }
-                }
+                },
+                'ui_helper': Coordinate(120, 140)
             },
             'factory_1': {
-                'coordinate': Coordinate(250, 345),
+                'coordinate': Coordinate(280, 330),
                 'functions': {
                     'recruit': {
-                        'coordinate': Coordinate(255, 345)
+                        'coordinate': Coordinate(370, 390)
                     }
-                }
+                },
+                'ui_helper': Coordinate(200, 140)
             },
             'factory_2': {
-                'coordinate': Coordinate(195, 400),
+                'coordinate': Coordinate(220, 380),
                 'functions': {
                     'recruit': {
-                        'coordinate': Coordinate(285, 460)
+                        'coordinate': Coordinate(315, 435)
                     }
-                }
+                },
+                'ui_helper': Coordinate(40, 220)
             },
             'embassy': {
-                'coordinate': Coordinate(240, 300),
+                'coordinate': Coordinate(260, 230),
                 'functions': {
                     'upgrade': {
                         'coordinate': Coordinate(175, 355)
@@ -104,7 +108,7 @@ city_map = {
         },
         'buildings': {
             'oil_refinery': {
-                'coordinate': Coordinate(205, 265),
+                'coordinate': Coordinate(269, 241),
                 'functions': {
                     'upgrade': {
                         'coordinate': Coordinate(240, 325)
@@ -112,7 +116,7 @@ city_map = {
                 }
             },
             'farm': {
-                'coordinate': Coordinate(155, 315),
+                'coordinate': Coordinate(212, 290),
                 'functions': {
                     'upgrade': {
                         'coordinate': Coordinate(187, 380)

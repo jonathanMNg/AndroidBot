@@ -8,6 +8,7 @@ from keyboard import keyboard
 memu = 'C:\\Program Files\\Microvirt\\MEmu\\memuc.exe'
 game_identifier = 'com.camelgames.aoz'
 
+
 # A detailed explanation of find_window function is below.
 def find_window(window_title):
     hwnd = win32gui.FindWindow(None, window_title)
@@ -16,11 +17,11 @@ def find_window(window_title):
     else:
         return True
 
+
 def start_vm(vm_name,vm_index):
     cmd = f"{memu} start -i {vm_index}"
     try:
         vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        print(vm)
         result, output = vm.stdout.split(':')
 
         print(result)
@@ -41,9 +42,10 @@ def start_vm(vm_name,vm_index):
     except Exception:
         raise
 
+
 def force_close_window(window_title):
     handle = win32gui.FindWindow(None, window_title)
-    result = win32gui.PostMessage(handle, win32con.WM_CLOSE,0,0)
+    result = win32gui.PostMessage(handle, win32con.WM_CLOSE, 0, 0)
     time.sleep(1)
     hwnd = find_window(window_title)
     if not hwnd:
@@ -51,7 +53,8 @@ def force_close_window(window_title):
     elif hwnd:
         return False
 
-def stop_vm(window_title,vm_index):
+
+def stop_vm(window_title, vm_index):
     cmd = f"{memu} stop vm -i {vm_index}"
     vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
 
@@ -63,12 +66,17 @@ def stop_vm(window_title,vm_index):
         if force_close:
             return True
 
-
         elif not force_close:
             raise Exception("Failed to close VM")
 
     elif not is_running:
         return True
+
+
+def reboot_vm(vm_index):
+    cmd = f"{memu} reboot vm -i {vm_index}"
+    handle_run_command(vm_index, cmd)
+
 
 def verify_game_process(vm_index):
     try:
@@ -81,11 +89,28 @@ def verify_game_process(vm_index):
     except Exception:
         return False
 
+
+def is_game_open(vm_index):
+    try:
+        cmd = f"{memu} -i {vm_index} adb shell dumpsys window windows | grep mCurrentFocus"
+        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        output = proc.stdout.splitlines()[2]
+        if game_identifier in output:
+            return True
+        else:
+            return False
+
+    except Exception:
+        return False
+
+
 def start_game(vm_index):
     try:
         cmd = f"{memu} startapp -i {vm_index} {game_identifier}"
         proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
         output, result = proc.stdout.split(":")
+        print(result)
+        print(output)
         time.sleep(5)
         result = verify_game_process(vm_index)
         if isinstance(result, int):
@@ -96,62 +121,64 @@ def start_game(vm_index):
         raise
 
 
+def handle_restart_if_game_not_open(vm_index):
+    if not is_game_open(vm_index):
+        stop_vm("", vm_index)
+        time.sleep(5)
+        start_vm("", vm_index)
+        time.sleep(10)
+        start_game(vm_index)
+        time.sleep(10)
+
+
 def handle_touch(vm_index, x, y):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input tap {x} {y}"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        time.sleep(1)
-        # output = proc.stdout.splitlines()[2]
-    except Exception:
-        return False
+    cmd = f"{memu} -i {vm_index} adb shell input tap {x} {y}"
+    handle_run_command(vm_index, cmd)
 
 
 def handle_tap(vm_index, coordinate):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input tap {coordinate.x} {coordinate.y}"
-        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        time.sleep(1)
-    except Exception:
-        return False
+    cmd = f"{memu} -i {vm_index} adb shell input tap {coordinate.x} {coordinate.y}"
+    handle_run_command(vm_index, cmd)
+
 
 
 def handle_return(vm_index):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input keyevent 4"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-    except Exception:
-        return False
+    cmd = f"{memu} -i {vm_index} adb shell input keyevent 4"
+    handle_run_command(vm_index, cmd)
 
 
 def handle_backspace(vm_index):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input keyevent 67"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-    except Exception:
-        return False
+    time.sleep(1)
+    cmd = f"{memu} -i {vm_index} adb shell input keyevent 67"
+    handle_run_command(vm_index, cmd)
 
 
 def handle_enter(vm_index):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input keyevent 66"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-    except Exception:
-        return False
+    cmd = f"{memu} -i {vm_index} adb shell input keyevent 66"
+    handle_run_command(vm_index, cmd)
 
 
 def handle_input(vm_index, key):
     keycode = keyboard[str(key)]
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell input keyevent {keycode}"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-    except Exception:
-        return False
+    cmd = f"{memu} -i {vm_index} adb shell input keyevent {keycode}"
+    handle_run_command(vm_index, cmd)
 
 
 def handle_swipe(vm_index, src_coor, dest_coor):
+
+    cmd = f"{memu} -i {vm_index} adb shell input swipe {src_coor.x} {src_coor.y} {dest_coor.x} {dest_coor.y}"
+    handle_run_command(vm_index, cmd)
+
+
+def handle_long_tap(vm_index, coordinate):
+    cmd = f"{memu} -i {vm_index} adb shell input swipe {coordinate.x} {coordinate.y} {coordinate.x} {coordinate.y} 1000"
+    handle_run_command(vm_index, cmd)
+
+
+def handle_run_command(vm_index, command):
+    time.sleep(1)
     try:
-        cmd = f"{memu} -i {vm_index} adb shell input swipe {src_coor.x} {src_coor.y} {dest_coor.x} {dest_coor.y}"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        subprocess.run(command, check=True, stdout=subprocess.PIPE, encoding='utf-8')
     except Exception:
         return False
 
@@ -159,8 +186,8 @@ def handle_swipe(vm_index, src_coor, dest_coor):
 def handle_swipe_vertical(vm_index, distance):
     minY = 0
     maxY = 640
-    src_coor = Coordinate(200, 320)  # center coordinate
-    dest_coor = Coordinate(200, 320)
+    src_coor = Coordinate(200, 300)  # center coordinate
+    dest_coor = Coordinate(200, 300)
     dest_coor.y = dest_coor.y + distance
     if dest_coor.y < minY:
         dest_coor.y = minY
@@ -172,11 +199,27 @@ def handle_swipe_vertical(vm_index, distance):
 def handle_swipe_horizontal(vm_index, distance):
     minX = 0
     maxX = 400
-    src_coor = Coordinate(200, 320)  # center coordinate
-    dest_coor = Coordinate(200, 320)
+    src_coor = Coordinate(200, 300)  # center coordinate
+    dest_coor = Coordinate(200, 300)
     dest_coor.x = dest_coor.x - distance
     if dest_coor.x < minX:
         dest_coor.x = minX
     elif dest_coor.x > maxX:
         dest_coor.x = maxX
     handle_swipe(vm_index, src_coor, dest_coor)
+
+
+def handle_swipe_to_location(vm_index, horizontal_distance, vertical_distance):
+    handle_swipe_horizontal(vm_index, horizontal_distance)
+    handle_swipe_vertical(vm_index, vertical_distance)
+
+
+def handle_screen_shot(vm_index):
+    time.sleep(1)
+    try:
+        cmd = f"{memu} -i {vm_index} adb shell screencap -p /sdcard/screen.png"
+        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        cmd = f"{memu} -i {vm_index} adb pull /sdcard/screen.png ./screen.png"
+        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+    except Exception:
+        return False

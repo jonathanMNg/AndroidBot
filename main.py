@@ -1,31 +1,59 @@
 import time
-import datetime
 import vm
 import game
-from keyboard import keyboard
-from object.coordinate import Coordinate
+from locations import functions_location
+import argparse
 if __name__ == "__main__":
 
-    #vm.start_vm('MEmu2', 0)
-    #vm.stop_vm('Memu2', 0)
-    #vm.start_game(0)
+    parser = argparse.ArgumentParser()
 
-    vm.handle_swipe_horizontal(0, 300)
-    vm.handle_swipe_vertical(0, -150)
+    parser.add_argument('--gather-resources-type', help='resources type to gather [oil|steel|farm], default is oil')
+    parser.add_argument('--vm-index', help='Index value of Memu Emulator e.g 0|1|2|3')
+    args = parser.parse_args()
+
+    gather_resources_type = 'oil'
+    vm_index = 0
+    if hasattr(args, 'gather_resources_type'):
+        gather_resources_type = args.gather_resources_type
+    if hasattr(args, 'vm_index'):
+        vm_index = args.vm_index
+
+    total_accounts = len(functions_location.ui.my_info.account.functions.switch_account.accounts)
+    game.handle_gather_resources(vm_index, gather_resources_type)
+
+    current_account = 0
     # while True:
-    #     Collect Resources
-    #     game.handle_collect_oil(0)
-    #     game.handle_collect_farm(0)
+    #     if current_account < total_accounts:
+    #         current_account = current_account + 1
+    #     else:
+    #         vm.stop_vm("", vm_index)
+    #         time.sleep(300)
+    #         vm.start_vm("", vm_index)
+    #         time.sleep(10)
+    #         vm.start_game(vm_index)
+    #         time.sleep(10)
+    #         current_account = 1
     #
-    #     #  Gather Resources
-    #     game.handle_gather_oil(0)
+    #     vm.handle_restart_if_game_not_open(vm_index)
+    #     account = game.handle_switch_account(vm_index, current_account)
+    #     print(current_account)
+    #     account_level = account.level
+    #     time.sleep(5)
     #
-    #     #  Recruit Camp
-    #     game.handle_recruit_camp1(0)
-    #     game.handle_recruit_camp2(0)
+    #     game.handle_recruit_camp1(vm_index)
     #
-    #     #  Recruit Factory
-    #     game.handle_recruit_factory1(0)
-    #     #  Wait for 30 minutes
-    #     print("sleeping..." + str(datetime.datetime.now().time()))
-    #     time.sleep(60)
+    #     game.handle_recruit_camp2(vm_index)
+    #
+    #     game.handle_recruit_factory1(vm_index)
+    #
+    #     game.handle_recruit_factory2(vm_index)
+    #
+    #     #  If account level is 15 or higher, gather steel otherwise gather oil or whatever assigned
+    #     if account_level >= 15:
+    #         game.handle_gather_resources(vm_index, 'steel')
+    #     else:
+    #         if gather_resources_type == 'farm':
+    #             game.handle_gather_resources(vm_index, 'farm')
+    #         else:
+    #             game.handle_gather_resources(vm_index, 'oil')
+
