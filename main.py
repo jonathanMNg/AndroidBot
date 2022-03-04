@@ -40,13 +40,11 @@ if __name__ == "__main__":
     #     account_level = account.level
     #     time.sleep(5)
     #
-    #     game.handle_recruit_camp1(vm_index)
+    #     handle_recruit_troop(vm_index, building_type='camp', number=1)
+    #     handle_recruit_troop(vm_index, building_type='camp', number=2)
+    #     handle_recruit_troop(vm_index, building_type='factory', number=1)
+    #     handle_recruit_troop(vm_index, building_type='factory', number=2)
     #
-    #     game.handle_recruit_camp2(vm_index)
-    #
-    #     game.handle_recruit_factory1(vm_index)
-    #
-    #     game.handle_recruit_factory2(vm_index)
     #
     #     #  If account level is 15 or higher, gather steel otherwise gather oil or whatever assigned
     #     if account_level >= 15:

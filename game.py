@@ -1,7 +1,6 @@
 import time
 from object.coordinate import Coordinate
 from locations import city_map_location, ui_location, functions_location
-
 import vm
 
 
@@ -87,22 +86,6 @@ def handle_recruit_troop(vm_index, building_type, number=1):
     handle_ui_helper_expand(vm_index)
     vm.handle_tap(vm_index, ui_helper_location)
     vm.handle_tap(vm_index, functions_location.buildings.troop_buildings.recruit.select_recruit)
-
-
-def handle_recruit_camp1(vm_index):
-    handle_recruit_troop(vm_index, building_type='camp', number=1)
-
-
-def handle_recruit_camp2(vm_index):
-    handle_recruit_troop(vm_index, building_type='camp', number=2)
-
-
-def handle_recruit_factory1(vm_index):
-    handle_recruit_troop(vm_index, building_type='factory', number=1)
-
-
-def handle_recruit_factory2(vm_index):
-    handle_recruit_troop(vm_index, building_type='factory', number=2)
 
 
 def handle_switch_account(vm_index, account_no):
