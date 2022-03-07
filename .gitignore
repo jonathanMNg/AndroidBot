@@ -79,3 +79,4 @@ __pycache__/vm.cpython-37.pyc
 __pycache__/game.cpython-37.pyc
 __pycache__/vm.cpython-37.pyc
 __pycache__/game.cpython-37.pyc
+*.pyc

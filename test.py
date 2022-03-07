@@ -1,11 +1,15 @@
-import argparse, sys
+from locations import city_map_location
+import datetime
+import time
+starting_minute = datetime.datetime.now().minute
+current_minute = datetime.datetime.now().minute
+interval_minute = 1
 
-parser = argparse.ArgumentParser()
+while True:
+    current_minute = datetime.datetime.now().minute
+    print("hello world!")
+    if current_minute > starting_minute:
+        print("do something")
+        starting_minute = current_minute
 
-parser.add_argument('--gather-resources-type', help='resources type to gather [oil|steel|farm], default is oil')
-parser.add_argument('--vm-index', help='Index value of Memu Emulator e.g 0|1|2|3')
-
-args = parser.parse_args()
-
-print(args)
-print(sys)
+    time.sleep(10)

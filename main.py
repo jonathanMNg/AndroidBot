@@ -1,6 +1,8 @@
-import time
+import datetime
 import vm
+import time
 import game
+from object.coordinate import Coordinate
 from locations import functions_location
 import argparse
 if __name__ == "__main__":
@@ -18,40 +20,55 @@ if __name__ == "__main__":
     if hasattr(args, 'vm_index'):
         vm_index = args.vm_index
 
-    total_accounts = len(functions_location.ui.my_info.account.functions.switch_account.accounts)
-    game.handle_gather_resources(vm_index, gather_resources_type)
+    total_accounts = len(getattr(functions_location.tab_bar.my_info.account.functions.switch_account.accounts, f"vm_index_{vm_index}"))
+    #  Start Debugging Area
 
+    # account = functions_location.tab_bar.my_info.account.functions.switch_account.accounts.vm_index_2.account_1
+    # game.handle_collect_resources(vm_index)
+    # game.handle_upgrade_targeted_building(vm_index, account)
+
+    # End Debugging Area
     current_account = 0
-    # while True:
-    #     if current_account < total_accounts:
-    #         current_account = current_account + 1
-    #     else:
-    #         vm.stop_vm("", vm_index)
-    #         time.sleep(300)
-    #         vm.start_vm("", vm_index)
-    #         time.sleep(10)
-    #         vm.start_game(vm_index)
-    #         time.sleep(10)
-    #         current_account = 1
-    #
-    #     vm.handle_restart_if_game_not_open(vm_index)
-    #     account = game.handle_switch_account(vm_index, current_account)
-    #     print(current_account)
-    #     account_level = account.level
-    #     time.sleep(5)
-    #
-    #     handle_recruit_troop(vm_index, building_type='camp', number=1)
-    #     handle_recruit_troop(vm_index, building_type='camp', number=2)
-    #     handle_recruit_troop(vm_index, building_type='factory', number=1)
-    #     handle_recruit_troop(vm_index, building_type='factory', number=2)
-    #
-    #
-    #     #  If account level is 15 or higher, gather steel otherwise gather oil or whatever assigned
-    #     if account_level >= 15:
-    #         game.handle_gather_resources(vm_index, 'steel')
-    #     else:
-    #         if gather_resources_type == 'farm':
-    #             game.handle_gather_resources(vm_index, 'farm')
-    #         else:
-    #             game.handle_gather_resources(vm_index, 'oil')
+    current_hour = datetime.datetime.now().hour
+    last_hour = current_hour - 1
+    while True:
+        if current_account < total_accounts:
+            current_account = current_account + 1
+        else:
+            if last_hour < current_hour:
+                last_hour = current_hour
+            current_hour = datetime.datetime.now().hour
+            vm.stop_vm("", vm_index)
+            time.sleep(600)
+            vm.start_vm("", vm_index)
+            time.sleep(10)
+            vm.start_game(vm_index)
+            time.sleep(10)
+            current_account = 1
 
+        account = game.handle_switch_account(vm_index, current_account)
+        print(current_account)
+        account_level = account.level
+        time.sleep(5)
+
+        game.handle_recruit_troop(vm_index, building_type='camp', number=1)
+        game.handle_recruit_troop(vm_index, building_type='camp', number=2)
+        game.handle_recruit_troop(vm_index, building_type='factory', number=1)
+        game.handle_recruit_troop(vm_index, building_type='factory', number=2)
+
+        #  If account level is 15 or higher, gather steel otherwise gather oil or whatever assigned
+        if account_level >= 15:
+            game.handle_gather_resources(vm_index, 'steel')
+        else:
+            if gather_resources_type == 'farm':
+                game.handle_gather_resources(vm_index, 'farm')
+            else:
+                game.handle_gather_resources(vm_index, 'oil')
+
+        #  Collect resources and activate harvest every one hour
+        print(f"current hour: {current_hour} | last hour: {last_hour}")
+        if last_hour < current_hour:
+            game.handle_collect_resources(vm_index)
+            game.handle_activate_harvest(vm_index)
+            game.help_alliances(vm_index)
+            game.handle_upgrade_targeted_building(vm_index, account)

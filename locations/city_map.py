@@ -2,16 +2,15 @@ from object.coordinate import Coordinate
 
 city_map = {
     'special_buildings': {
-        'direction_from_default_view': {
-            'horizontal': -150,
-            'vertical': -100
-        },
+        'tap_path_from_default_view': [
+            Coordinate(60, 409)
+        ],
         'buildings': {
             'garage': {
-                'coordinate': Coordinate(190, 310),
+                'coordinate': Coordinate(141, 324),
                 'functions': {
                     'upgrade': {
-                        'coordinate': Coordinate(150, 395)
+                        'coordinate': Coordinate(90, 415)
                     }
                 }
             },
@@ -50,10 +49,9 @@ city_map = {
         }
     },
     'troop_buildings': {
-        'direction_from_default_view': {
-            'horizontal': 120,
-            'vertical': -100
-        },
+        'tap_path_from_default_view': [
+            Coordinate(189, 230), Coordinate(300, 403)
+        ],
         'buildings': {
             'camp_1': {
                 'coordinate': Coordinate(215, 265),
@@ -92,31 +90,46 @@ city_map = {
                 'ui_helper': Coordinate(40, 220)
             },
             'embassy': {
-                'coordinate': Coordinate(260, 230),
+                'coordinate': Coordinate(300, 133),
                 'functions': {
                     'upgrade': {
-                        'coordinate': Coordinate(175, 355)
+                        'coordinate': Coordinate(283, 381)
+                    }
+                }
+            },
+            'recon_center': {
+                'coordinate': Coordinate(288, 168),
+                'functions': {
+                    'upgrade': {
+                        'coordinate': Coordinate(193, 235)
                     }
                 }
             },
         },
     },
     'resource_buildings': {
-        'direction_from_default_view': {
-            'horizontal': 300,
-            'vertical': -150
-        },
+        'tap_path_from_default_view': [
+            Coordinate(155, 513), Coordinate(300, 403), Coordinate(335, 435)
+        ],
         'buildings': {
-            'oil_refinery': {
-                'coordinate': Coordinate(269, 241),
+            'oil': {
+                'coordinate': Coordinate(255, 146),
                 'functions': {
                     'upgrade': {
-                        'coordinate': Coordinate(240, 325)
+                        'coordinate': Coordinate(225, 350)
                     }
                 }
             },
             'farm': {
-                'coordinate': Coordinate(212, 290),
+                'coordinate': Coordinate(205, 186),
+                'functions': {
+                    'upgrade': {
+                        'coordinate': Coordinate(240, 240)
+                    }
+                }
+            },
+            'steel': {
+                'coordinate': Coordinate(237, 413),
                 'functions': {
                     'upgrade': {
                         'coordinate': Coordinate(187, 380)
@@ -126,13 +139,12 @@ city_map = {
         },
     },
     'development_buildings': {
-        'direction_from_default_view': {
-            'horizontal': 0,
-            'vertical': 0
-        },
+        'tap_path_from_default_view': [
+
+        ],
         'buildings': {
             'main_hall': {
-                'coordinate': Coordinate(215, 300),
+                'coordinate': Coordinate(215, 280),
                 'functions': {
                     'upgrade': {
                         'coordinate': Coordinate(140, 310)
@@ -140,13 +152,24 @@ city_map = {
                 }
             },
             'academy': {
-                'coordinate': Coordinate(365, 350),
+                'coordinate': Coordinate(360, 330),
                 'functions': {
                     'upgrade': {
-                        'coordinate': Coordinate(285, 355)
+                        'coordinate': Coordinate(195, 343)
+                    },
+                    'research': {
+                        'coordinate': Coordinate(270, 315)
                     }
                 }
             },
+            'hospital': {
+                'coordinate': Coordinate(300, 415),
+                'functions': {
+                    'upgrade': {
+                        'coordinate': Coordinate(300, 470)
+                    }
+                }
+            }
         }
     }
 }
