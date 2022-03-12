@@ -3,6 +3,7 @@ from object.coordinate import Coordinate
 from locations import city_map_location, ui_location, functions_location
 from helper import *
 import vm
+from object.building import Building
 
 
 def switch_city_and_map(vm_index):
@@ -36,7 +37,7 @@ def handle_set_gather_resource_level(vm_index, level):
 
 
 def handle_gather_resources(vm_index, resource_type):
-    vm.handle_restart_if_game_not_open(vm_index)
+    vm.handle_if_game_not_open(vm_index)
     close_all_windows(vm_index)
     switch_city_and_map(vm_index)
 
@@ -61,7 +62,7 @@ def handle_ui_helper_expand(vm_index):
 
 
 def handle_recruit_troop(vm_index, building_type, number=1):
-    vm.handle_restart_if_game_not_open(vm_index)
+    vm.handle_if_game_not_open(vm_index)
     recruit_option = 1
     ui_helper_location = None
     if building_type.lower() == 'camp':
@@ -80,8 +81,8 @@ def handle_recruit_troop(vm_index, building_type, number=1):
             ui_helper_location = city_map_location.troop_buildings.buildings.factory_2.ui_helper
 
     # Collect troops
-    # handle_ui_helper_expand(vm_index)
-    # vm.handle_tap(vm_index, ui_helper_location)
+    handle_ui_helper_expand(vm_index)
+    vm.handle_tap(vm_index, ui_helper_location)
 
     # Recruit troops
     handle_ui_helper_expand(vm_index)
@@ -90,7 +91,7 @@ def handle_recruit_troop(vm_index, building_type, number=1):
 
 
 def handle_switch_account(vm_index, account_no):
-    vm.handle_restart_if_game_not_open(vm_index)
+    vm.handle_if_game_not_open(vm_index)
     account = None
     accounts_based_on_vm_index = getattr(functions_location.tab_bar.my_info.account.functions.switch_account.accounts, f"vm_index_{vm_index}")
     total_accounts = len(accounts_based_on_vm_index)
@@ -116,7 +117,7 @@ def handle_switch_account(vm_index, account_no):
 
 
 def handle_collect_resources(vm_index):
-    vm.handle_restart_if_game_not_open(vm_index)
+    vm.handle_if_game_not_open(vm_index)
     go_to_city_view(vm_index)
     resource_building_location = city_map_location.resource_buildings
     handle_tap_path(vm_index, resource_building_location.tap_path_from_default_view)
@@ -139,15 +140,12 @@ def handle_tap_path(vm_index, tap_path):
 
 
 def handle_upgrade_targeted_building(vm_index, account):
-    vm.handle_restart_if_game_not_open(vm_index)
-    if account.upgrade_building is not None and account.upgrade_building != '':
+    vm.handle_if_game_not_open(vm_index)
+    if account.target_upgrade is not None and account.target_upgrade != '':
         go_to_city_view(vm_index)
-        building_type = get_building_information(account.upgrade_building.split('.')[0])
-        target_building = get_building_information(account.upgrade_building)
-        handle_tap_path(vm_index, building_type.tap_path_from_default_view)
-        vm.handle_tap(vm_index, target_building.coordinate)
-        vm.handle_tap(vm_index, target_building.functions.upgrade.coordinate)
-        vm.handle_tap(vm_index, functions_location.buildings.functions.upgrade)
+        building_name = account.target_upgrade
+        target_building = Building(building_name, vm_index)
+        target_building.upgrade()
 
 
 def help_alliances(vm_index):

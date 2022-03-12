@@ -9,68 +9,79 @@ memu = 'C:\\Program Files\\Microvirt\\MEmu\\memuc.exe'
 game_identifier = 'com.camelgames.aoz'
 
 
-# A detailed explanation of find_window function is below.
-def find_window(window_title):
-    hwnd = win32gui.FindWindow(None, window_title)
-    if hwnd == 0:
-        return False
-    else:
-        return True
-
-
-def start_vm(vm_name,vm_index):
-    cmd = f"{memu} start -i {vm_index}"
+def run_memuc(cmd):
     try:
+        cmd = f"{memu} {cmd}"
         vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        result, output = vm.stdout.split(':')
+        print(vm.stdout)
+    except Exception:
+        print(Exception)
 
-        print(result)
-        print(output)
-        if result == 'ERROR':
-            print('Memu returned Error. Switching to Manual Confirmation')
-            if find_window(window_title=vm_name):
-                return True
-            else:
-                return False
-        elif result == 'SUCCESS':
-            print('Command Success')
-            return True
-        else:
-            print('Unknown error')
+
+def is_vm_running(vm_index):
+    try:
+        cmd = f"{memu} isvmrunning -i {vm_index}"
+        vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        if 'Not Running' in vm.stdout:
             return False
-
+        else:
+            return True
     except Exception:
         raise
 
 
-def force_close_window(window_title):
-    handle = win32gui.FindWindow(None, window_title)
-    result = win32gui.PostMessage(handle, win32con.WM_CLOSE, 0, 0)
-    time.sleep(1)
-    hwnd = find_window(window_title)
-    if not hwnd:
+def start_vm(vm_index):
+    if not is_vm_running(vm_index):
+        try:
+            cmd = f"{memu} start -i {vm_index}"
+            vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+            result = vm.stdout
+
+            if 'ERROR' in result:
+                print('Error starting vm')
+                return False
+            elif 'SUCCESS' in result:
+                print('Command Success')
+                return True
+            else:
+                print('Unknown error starting vm')
+                print(result)
+                return False
+
+        except Exception:
+            raise
+    else:
         return True
-    elif hwnd:
+
+
+def force_close_window(pid):
+    try:
+        cmd = f"taskkill /F /PID {pid}"
+        vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+    except Exception:
+        raise
+
+
+def get_vm_pid(vm_index):
+    try:
+        cmd = f"{memu} listvms -i {vm_index}"
+        vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        v_index, v_title, v_window_handle, v_status, v_pid = vm.stdout.split(',')
+        return v_pid.strip()
+    except Exception:
         return False
 
 
-def stop_vm(window_title, vm_index):
-    cmd = f"{memu} stop vm -i {vm_index}"
-    vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-
-    time.sleep(1)
-    is_running = find_window(f"({window_title})")
-    if is_running:
-        # Check if window is still opened after executing the stop vm command. If True close the window manually.
-        force_close = force_close_window(window_title)
-        if force_close:
-            return True
-
-        elif not force_close:
-            raise Exception("Failed to close VM")
-
-    elif not is_running:
-        return True
+def stop_vm(vm_index):
+    try:
+        cmd = f"{memu} stop vm -i {vm_index}"
+        vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        time.sleep(1)
+        if is_vm_running(vm_index):
+            force_close_window(get_vm_pid(vm_index))
+            time.sleep(1)
+    except Exception:
+        raise
 
 
 def reboot_vm(vm_index):
@@ -78,57 +89,67 @@ def reboot_vm(vm_index):
     handle_run_command(vm_index, cmd)
 
 
-def verify_game_process(vm_index):
-    try:
-        cmd = f"{memu} -i {vm_index} adb shell pidof {game_identifier}"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        output = proc.stdout.splitlines()[2]
-        print(f" Android Process ID = {int(output)}")
-        return int(output)
-
-    except Exception:
-        return False
+# def verify_game_process(vm_index):
+#     try:
+#         cmd = f"{memu} -i {vm_index} adb shell pidof {game_identifier}"
+#         proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+#         output = proc.stdout.splitlines()[2]
+#         print(f" Android Process ID = {int(output)}")
+#         return int(output)
+#
+#     except Exception:
+#         return False
 
 
 def is_game_open(vm_index):
     try:
         cmd = f"{memu} -i {vm_index} adb shell dumpsys window windows | grep mCurrentFocus"
         proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        output = proc.stdout.splitlines()[2]
+        output = proc.stdout
         if game_identifier in output:
             return True
         else:
             return False
-
     except Exception:
         return False
 
 
 def start_game(vm_index):
-    try:
-        cmd = f"{memu} startapp -i {vm_index} {game_identifier}"
-        proc = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        output, result = proc.stdout.split(":")
-        print(result)
-        print(output)
-        time.sleep(5)
-        result = verify_game_process(vm_index)
-        if isinstance(result, int):
+    if is_vm_running(vm_index):
+        try:
+            cmd = f"{memu} startapp -i {vm_index} {game_identifier}"
+            subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+            time.sleep(5)
+        except Exception:
+            raise
+    else:
+        print("Error: vm is not running!")
 
-            print(output)
-            return True
+
+def kill_app(vm_index):
+    try:
+        cmd = f"{memu} -i {vm_index} adb shell am force-stop {game_identifier}"
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        cmd = f"{memu} -i {vm_index} adb shell am force-stop com.microvirt.launcher"
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
     except Exception:
         raise
 
 
-def handle_restart_if_game_not_open(vm_index):
+def handle_if_game_not_open(vm_index):
+    if not is_vm_running(vm_index):
+        start_vm(vm_index)
+        time.sleep(10)
     if not is_game_open(vm_index):
-        stop_vm("", vm_index)
-        time.sleep(5)
-        start_vm("", vm_index)
-        time.sleep(10)
+        kill_app(vm_index)
+        time.sleep(2)
         start_game(vm_index)
-        time.sleep(10)
+        time.sleep(5)
+        if not is_game_open(vm_index):
+            reboot_vm(vm_index)
+            time.sleep(10)
+            start_game(vm_index)
+            time.sleep(5)
 
 
 def handle_touch(vm_index, x, y):

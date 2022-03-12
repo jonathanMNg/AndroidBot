@@ -1,15 +1,13 @@
-from locations import city_map_location
-import datetime
-import time
-starting_minute = datetime.datetime.now().minute
-current_minute = datetime.datetime.now().minute
-interval_minute = 1
+from object.account import *
 
-while True:
-    current_minute = datetime.datetime.now().minute
-    print("hello world!")
-    if current_minute > starting_minute:
-        print("do something")
-        starting_minute = current_minute
+email_accounts_1 = [
+    Account('ChoppaPopa', 10)
+]
 
-    time.sleep(10)
+email_accounts_2 = [
+    Account('Commander123', 9)
+]
+
+accounts = Accounts([email_accounts_1, email_accounts_2])
+
+print(accounts.get_total_accounts())

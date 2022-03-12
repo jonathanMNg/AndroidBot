@@ -1,0 +1,52 @@
+{
+  "accounts": [
+    [
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      },
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      }
+    ],
+    [
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      },
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      }
+    ],
+    [
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      },
+      {
+        "name": "ChoppaPopa",
+        "level": "8",
+        "target_upgrade": "farm_1",
+        "target_research": "12",
+        "target_gather": "oil"
+      }
+    ]
+  ]
+}
