@@ -31,27 +31,25 @@ def is_vm_running(vm_index):
 
 
 def start_vm(vm_index):
-    if not is_vm_running(vm_index):
-        try:
-            cmd = f"{memu} start -i {vm_index}"
-            vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-            result = vm.stdout
+    try:
+        cmd = f"{memu} start -i {vm_index}"
+        vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        result = vm.stdout
 
-            if 'ERROR' in result:
-                print('Error starting vm')
-                return False
-            elif 'SUCCESS' in result:
-                print('Command Success')
-                return True
-            else:
-                print('Unknown error starting vm')
-                print(result)
-                return False
+        if 'ERROR' in result:
+            print('Error starting vm')
+            return 0
+        elif 'SUCCESS' in result:
+            print('Command Success')
+            pid = get_vm_pid(vm_index)
+            return pid
+        else:
+            print('Unknown error starting vm')
+            print(result)
+            return 0
 
-        except Exception:
-            raise
-    else:
-        return True
+    except Exception:
+        raise
 
 
 def force_close_window(pid):
@@ -72,13 +70,13 @@ def get_vm_pid(vm_index):
         return False
 
 
-def stop_vm(vm_index):
+def stop_vm(vm_index, pid):
     try:
         cmd = f"{memu} stop vm -i {vm_index}"
         vm = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
         time.sleep(1)
         if is_vm_running(vm_index):
-            force_close_window(get_vm_pid(vm_index))
+            force_close_window(pid)
             time.sleep(1)
     except Exception:
         raise
@@ -130,26 +128,27 @@ def kill_app(vm_index):
     try:
         cmd = f"{memu} -i {vm_index} adb shell am force-stop {game_identifier}"
         subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
-        cmd = f"{memu} -i {vm_index} adb shell am force-stop com.microvirt.launcher"
-        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, encoding='utf-8')
+        time.sleep(2)
     except Exception:
         raise
 
 
-def handle_if_game_not_open(vm_index):
+def handle_if_game_not_open(vm_index, pid):
     if not is_vm_running(vm_index):
-        start_vm(vm_index)
+        pid = start_vm(vm_index)
         time.sleep(10)
+    else:
+        pid = pid
     if not is_game_open(vm_index):
         kill_app(vm_index)
-        time.sleep(2)
+        time.sleep(1)
         start_game(vm_index)
         time.sleep(5)
         if not is_game_open(vm_index):
-            reboot_vm(vm_index)
-            time.sleep(10)
-            start_game(vm_index)
-            time.sleep(5)
+            stop_vm(vm_index, pid)
+            time.sleep(3)
+            pid = handle_if_game_not_open(vm_index, pid)
+    return pid
 
 
 def handle_touch(vm_index, x, y):

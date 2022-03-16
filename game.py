@@ -1,7 +1,8 @@
 import time
 from object.coordinate import Coordinate
-from locations import city_map_location, ui_location, functions_location
+from locations import ui_location, functions_location
 from helper import *
+from object.account import *
 import vm
 from object.building import Building
 
@@ -37,7 +38,6 @@ def handle_set_gather_resource_level(vm_index, level):
 
 
 def handle_gather_resources(vm_index, resource_type):
-    vm.handle_if_game_not_open(vm_index)
     close_all_windows(vm_index)
     switch_city_and_map(vm_index)
 
@@ -62,7 +62,6 @@ def handle_ui_helper_expand(vm_index):
 
 
 def handle_recruit_troop(vm_index, building_type, number=1):
-    vm.handle_if_game_not_open(vm_index)
     recruit_option = 1
     ui_helper_location = None
     if building_type.lower() == 'camp':
@@ -91,7 +90,6 @@ def handle_recruit_troop(vm_index, building_type, number=1):
 
 
 def handle_switch_account(vm_index, account_no):
-    vm.handle_if_game_not_open(vm_index)
     account = None
     accounts_based_on_vm_index = getattr(functions_location.tab_bar.my_info.account.functions.switch_account.accounts, f"vm_index_{vm_index}")
     total_accounts = len(accounts_based_on_vm_index)
@@ -117,7 +115,6 @@ def handle_switch_account(vm_index, account_no):
 
 
 def handle_collect_resources(vm_index):
-    vm.handle_if_game_not_open(vm_index)
     go_to_city_view(vm_index)
     resource_building_location = city_map_location.resource_buildings
     handle_tap_path(vm_index, resource_building_location.tap_path_from_default_view)
@@ -140,7 +137,6 @@ def handle_tap_path(vm_index, tap_path):
 
 
 def handle_upgrade_targeted_building(vm_index, account):
-    vm.handle_if_game_not_open(vm_index)
     if account.target_upgrade is not None and account.target_upgrade != '':
         go_to_city_view(vm_index)
         building_name = account.target_upgrade
@@ -153,3 +149,51 @@ def help_alliances(vm_index):
     vm.handle_tap(vm_index, ui_location.alliance.coordinate)
     vm.handle_tap(vm_index, ui_location.alliance.functions.alliance_help)
     vm.handle_tap(vm_index, ui_location.alliance.functions.help_all)
+
+
+def withdraw_fleet(vm_index, accounts, config):
+    vm.handle_if_game_not_open(vm_index, 0)
+    for i, email in enumerate(config['accounts']):
+        for j, account in enumerate(email):
+            accounts.switch_account(i, j)
+            close_all_windows(vm_index)
+            switch_city_and_map(vm_index)
+            vm.handle_tap(vm_index, Coordinate(142, 122))
+            vm.handle_tap(vm_index, Coordinate(200, 353))
+
+            vm.handle_tap(vm_index, Coordinate(142, 155))
+            vm.handle_tap(vm_index, Coordinate(200, 353))
+
+            vm.handle_tap(vm_index, Coordinate(25, 191))
+            vm.handle_tap(vm_index, Coordinate(200, 353))
+
+            vm.handle_tap(vm_index, Coordinate(142, 186))
+            vm.handle_tap(vm_index, Coordinate(200, 353))
+
+            vm.handle_tap(vm_index, Coordinate(142, 218))
+            vm.handle_tap(vm_index, Coordinate(200, 353))
+
+
+def explore_ruin(vm_index, accounts, config):
+    vm.handle_if_game_not_open(vm_index, 0)
+    for i, email in enumerate(config['accounts']):
+        for j, account in enumerate(email):
+            accounts.switch_account(i, j)
+            close_all_windows(vm_index)
+            # Select Prosperity
+            vm.handle_tap(vm_index, Coordinate(155, 10))
+            # Select proceed to ruins
+            vm.handle_tap(vm_index, Coordinate(200, 333))
+            time.sleep(2)
+            # Select Explore
+            vm.handle_tap(vm_index, Coordinate(198, 181))
+            time.sleep(2)
+            # SElect Refugee Rescue
+            vm.handle_tap(vm_index, Coordinate(110, 173))
+            time.sleep(1)
+            # Select level
+            ruins_level_coordinate = Coordinate(config["ruins_level_coordinate"]["x"], config["ruins_level_coordinate"]["y"])
+            vm.handle_tap(vm_index, ruins_level_coordinate)
+
+            # Select set out
+            vm.handle_tap(vm_index, Coordinate(337, 621))

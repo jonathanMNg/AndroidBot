@@ -69,7 +69,7 @@ class BuildingCoordinate(object):
     main_hall = Coordinate(215, 285)
     oil_1 = Coordinate(254, 149)
     recon_center = Coordinate(290, 168)
-    steel_1 = Coordinate(237, 413)
+    steel_1 = Coordinate(237, 357)
     wall = Coordinate(303, 399)
 
 
@@ -121,6 +121,8 @@ class BuildingFunctions:
             upgrade_coordinate = Coordinate(237, 355)
         elif self.building_name == BuildingName.wall:
             upgrade_coordinate = Coordinate(158, 367)
+        elif self.building_name == BuildingName.steel_1:
+            upgrade_coordinate = Coordinate(272, 424)
 
         self.navigate_to_building()
         self.tap_on_building()

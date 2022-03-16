@@ -1,13 +1,14 @@
-from object.account import *
+import argparse
+parser = argparse.ArgumentParser()
 
-email_accounts_1 = [
-    Account('ChoppaPopa', 10)
-]
+parser.add_argument('--gather-resources-type', help='resources type to gather', choices=['oil', 'farm', 'steel', 'mineral'], default='oil')
+parser.add_argument('--command', '-c', help='Single command [withdraw|explore|sendalltroops]')
+parser.add_argument('--low-power', '-l', help='Low power consumption mode', action='store_true')
+args = parser.parse_args()
 
-email_accounts_2 = [
-    Account('Commander123', 9)
-]
 
-accounts = Accounts([email_accounts_1, email_accounts_2])
-
-print(accounts.get_total_accounts())
+if hasattr(args, 'low_power'):
+    if args.low_power:
+        print("Hello")
+    else:
+        print("Bye")

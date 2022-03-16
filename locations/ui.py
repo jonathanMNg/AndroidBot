@@ -8,8 +8,8 @@ ui = {
     'alliance':  {
         'coordinate': Coordinate(300, 615),
         'functions': {
-            'alliance_help': Coordinate(190, 415),
-            'help_all': Coordinate(202, 616)
+            'alliance_help': Coordinate(190, 463),
+            'help_all': Coordinate(202, 617)
         }
     },
     'my_info': Coordinate(366, 615),
