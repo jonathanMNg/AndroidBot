@@ -109,7 +109,7 @@ city_map = {
     },
     'resource_buildings': {
         'tap_path_from_default_view': [
-            Coordinate(155, 513), Coordinate(300, 403), Coordinate(335, 435)
+            Coordinate(155, 513), Coordinate(300, 403), Coordinate(335, 435), Coordinate(90, 300)
         ],
         'buildings': {
             'oil': {
@@ -136,6 +136,14 @@ city_map = {
                     }
                 }
             },
+            'mineral': {
+                'coordinate': Coordinate(327, 419),
+                'functions': {
+                    'upgrade': {
+                        'coordinate': Coordinate(228, 475)
+                    }
+                }
+            }
         },
     },
     'development_buildings': {

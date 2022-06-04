@@ -2,51 +2,55 @@
   "accounts": [
     [
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "1",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": ""
       },
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "2",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": ""
       }
     ],
     [
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "3",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": "12"
       },
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "4",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": "12"
       }
     ],
     [
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "5",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": "12"
       },
       {
-        "name": "ChoppaPopa",
-        "level": "8",
-        "target_upgrade": "farm_1",
-        "target_research": "12",
-        "target_gather": "oil"
+        "name": "6",
+        "level": "15",
+        "target_upgrade": "",
+        "target_research": "12"
       }
     ]
-  ]
+  ],
+  "ruins_level_coordinate": {
+    "x": 325,
+    "y": 450
+  },
+  "recruit_frequency": 0, 
+  "sleep_interval": 3600,
+  "interval_hour": 3,
+  "vm_name": "AOZ_0",
+  "vm_index": "0",
+  "resource_level": 0
 }

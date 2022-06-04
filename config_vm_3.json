@@ -1,0 +1,42 @@
+{
+  "accounts": [
+    [
+      {
+        "name": "1",
+        "level": "20",
+        "target_upgrade": "",
+        "target_research": ""
+      },
+      {
+        "name": "2",
+        "level": "20",
+        "target_upgrade": "",
+        "target_research": ""
+      }
+    ],
+    [
+      {
+        "name": "3",
+        "level": "20",
+        "target_upgrade": "",
+        "target_research": ""
+      },
+      {
+        "name": "4",
+        "level": "20",
+        "target_upgrade": "",
+        "target_research": ""
+      }
+    ]
+  ],
+  "ruins_level_coordinate": {
+    "x": 325,
+    "y": 450
+  },
+  "recruit_frequency": 1,
+  "sleep_interval": 2700,
+  "interval_hour": 4,
+  "vm_name": "AOZ_3",
+  "vm_index": "3",
+  "resource_level": 0
+}

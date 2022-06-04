@@ -47,6 +47,7 @@ class BuildingTapPath(object):
     oil_1 = TapPath.Lab_Wall_Tower
     recon_center = TapPath.Depot
     steel_1 = TapPath.Lab_Wall_Tower
+    mineral_1 = TapPath.Lab_Wall_Tower
     wall = TapPath.Lab
 
 
@@ -68,9 +69,10 @@ class BuildingCoordinate(object):
     hospital = Coordinate(301, 396)
     main_hall = Coordinate(215, 285)
     oil_1 = Coordinate(254, 149)
-    recon_center = Coordinate(290, 168)
+    recon_center = Coordinate(290, 227)
     steel_1 = Coordinate(237, 357)
     wall = Coordinate(303, 399)
+    mineral_1 = Coordinate(330, 420)
 
 
 class BuildingFunctions:
@@ -114,7 +116,7 @@ class BuildingFunctions:
         elif self.building_name == BuildingName.factory_2:
             upgrade_coordinate = Coordinate(195, 365)
         elif self.building_name == BuildingName.recon_center:
-            upgrade_coordinate = Coordinate(194, 237)
+            upgrade_coordinate = Coordinate(305, 295)
         elif self.building_name == BuildingName.house_1:
             upgrade_coordinate = Coordinate(239, 285)
         elif self.building_name == BuildingName.dispatch_center:

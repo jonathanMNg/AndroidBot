@@ -74,5 +74,5 @@ class Accounts:
         time.sleep(5)
         vm.handle_tap(self.vm_index, choose_account)
         vm.handle_tap(self.vm_index, functions_location.tab_bar.my_info.account.functions.switch_account.confirm_choose_account)
-        time.sleep(5)
+        time.sleep(10)
 

@@ -1,14 +1,13 @@
 import argparse
-parser = argparse.ArgumentParser()
+import datetime
+import json
+from object.account import *
+import sys
 
-parser.add_argument('--gather-resources-type', help='resources type to gather', choices=['oil', 'farm', 'steel', 'mineral'], default='oil')
-parser.add_argument('--command', '-c', help='Single command [withdraw|explore|sendalltroops]')
-parser.add_argument('--low-power', '-l', help='Low power consumption mode', action='store_true')
-args = parser.parse_args()
+arr = ['a','b','c','d','e','f']
+index = 3
 
-
-if hasattr(args, 'low_power'):
-    if args.low_power:
-        print("Hello")
-    else:
-        print("Bye")
+for i, v in enumerate(arr):
+    if i < index:
+        continue
+    print(i, v)
