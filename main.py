@@ -48,6 +48,7 @@ if __name__ == "__main__":
     parser.add_argument('--gather-resources-type', '-g', help='Resources type to gather', choices=['oil', 'farm', 'steel', 'mineral'], default='oil')
     parser.add_argument('--config-file', '-f', help='Config file for accounts [.\\config.json]', required=True)
     parser.add_argument('--command', '-c', help='Single command automation', choices=['withdraw', 'explore', 'bonus'])
+    parser.add_argument('--wait', '-w', help='Wait until runtime')
     parser.add_argument('--restart', '-r', help='Restart Mode, set repeat to only 1', action='store_true')
     args = parser.parse_args()
 
@@ -71,6 +72,8 @@ if __name__ == "__main__":
     interval_hour = config["interval_hour"]
     current_hour = datetime.datetime.now().hour
     last_hour = current_hour - interval_hour
+    if hasattr(args, 'wait') and args.wait is not None:
+        time.sleep(int(args.wait))
     if hasattr(args, 'command') and args.command is not None:
         if args.command == 'withdraw':
             game.withdraw_fleet(vm_index, accounts, config)
