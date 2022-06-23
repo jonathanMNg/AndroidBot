@@ -34,7 +34,7 @@ def check_limit_instances():
         while True:
             instances_running_count = vm.count_tasks('MEmu.exe')
             print("current instances: " + str(instances_running_count))
-            if instances_running_count >= 2:
+            if instances_running_count >= 1:
                 time.sleep(30)
             else:
                 break
@@ -79,6 +79,8 @@ if __name__ == "__main__":
             game.withdraw_fleet(vm_index, accounts, config)
         elif args.command == 'explore':
             game.explore_ruin(vm_index, accounts, config)
+        elif args.command == 'instant':
+            game.instant_recall(vm_index, accounts, config)
         sys.exit(-1)
 
     already_run_once = False

@@ -226,6 +226,22 @@ def explore_ruin(vm_index, accounts, config, index=0):
             vm.handle_tap(vm_index, Coordinate(337, 621))
 
 
+def instant_recall(vm_index, accounts, config, index=0):
+    for i, email in enumerate(config['accounts']):
+        if i < index:
+            continue
+        for j, account in enumerate(email):
+            if vm.handle_if_game_not_open(vm_index, config["vm_name"]):
+                withdraw_fleet(vm_index, accounts, config, i)
+                return
+            close_all_windows(vm_index)
+            accounts.switch_account(i, j)
+
+            vm.handle_tap(vm_index, ui_location.activate_commander_skills.coordinate)
+            vm.handle_tap(vm_index, ui_location.activate_commander_skills.functions.recall)
+            vm.handle_tap(vm_index, ui_location.activate_commander_skills.functions.use)
+
+
 def collect_territory_reward(vm_index):
     close_all_windows(vm_index)
     vm.handle_tap(vm_index, ui_location.mail)

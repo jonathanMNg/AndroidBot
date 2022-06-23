@@ -19,6 +19,9 @@ class BuildingName(object):
     farm_1 = 'farm_1'
     garage = 'garage'
     house_1 = 'house_1'
+    house_2 = 'house_2'
+    house_3 = 'house_3'
+    house_4 = 'house_4'
     hospital = 'hospital'
     main_hall = 'main_hall'
     oil_1 = 'oil_1'
@@ -42,6 +45,9 @@ class BuildingTapPath(object):
     farm_1 = TapPath.Lab_Wall_Tower
     garage = TapPath.Lab
     house_1 = TapPath.Academy_Dispatch
+    house_2 = TapPath.Academy_Dispatch
+    house_3 = TapPath.Academy_Dispatch
+    house_4 = TapPath.Academy_Dispatch
     hospital = TapPath.Main_Hall
     main_hall = TapPath.Main_Hall
     oil_1 = TapPath.Lab_Wall_Tower
@@ -66,6 +72,9 @@ class BuildingCoordinate(object):
     farm_1 = Coordinate(209, 189)
     garage = Coordinate(48, 267)
     house_1 = Coordinate(208, 229)
+    house_2 = Coordinate(250, 260)
+    house_3 = Coordinate(345, 315)
+    house_4 = Coordinate(384, 339)
     hospital = Coordinate(301, 396)
     main_hall = Coordinate(215, 285)
     oil_1 = Coordinate(254, 149)
@@ -119,6 +128,12 @@ class BuildingFunctions:
             upgrade_coordinate = Coordinate(305, 295)
         elif self.building_name == BuildingName.house_1:
             upgrade_coordinate = Coordinate(239, 285)
+        elif self.building_name == BuildingName.house_2:
+            upgrade_coordinate = Coordinate(276, 306)
+        elif self.building_name == BuildingName.house_3:
+            upgrade_coordinate = Coordinate(230, 342)
+        elif self.building_name == BuildingName.house_4:
+            upgrade_coordinate = Coordinate(230, 342)
         elif self.building_name == BuildingName.dispatch_center:
             upgrade_coordinate = Coordinate(237, 355)
         elif self.building_name == BuildingName.wall:

@@ -23,7 +23,7 @@ functions = {
                 'coordinate': Coordinate(320, 600),
                 'functions': {
                     'switch_account': {
-                        'coordinate': Coordinate(200, 495),
+                        'coordinate': Coordinate(200, 445),
                         'game_login': Coordinate(200, 356),
                         'confirm_choose_account': Coordinate(125, 360)
                     },
