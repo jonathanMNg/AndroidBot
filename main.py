@@ -26,6 +26,8 @@ def gather_resources(level, gather_type, resource_level, vm_name):
         game.handle_gather_resources(vm_index, 'steel', resource_level)
     elif gather_type == 'mineral':
         game.handle_gather_resources(vm_index, 'mineral', resource_level)
+    elif gather_type != '' and level < 15:
+        game.handle_gather_resources(vm_index, 'oil', resource_level)
     else:
         game.handle_gather_resources(vm_index, 'oil', resource_level)
 
