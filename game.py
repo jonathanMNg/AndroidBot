@@ -232,7 +232,7 @@ def instant_recall(vm_index, accounts, config, index=0):
             continue
         for j, account in enumerate(email):
             if vm.handle_if_game_not_open(vm_index, config["vm_name"]):
-                withdraw_fleet(vm_index, accounts, config, i)
+                instant_recall(vm_index, accounts, config, i)
                 return
             close_all_windows(vm_index)
             accounts.switch_account(i, j)

@@ -3,7 +3,9 @@ import subprocess
 import keyboard
 memu = '"C:\\Program Files\\Microvirt\\MEmu\\memuc.exe"'
 game_identifier = 'com.camelgames.aoz'
-
+play_game_id = 'com.google.android.play.games'
+play_store_id = 'com.android.vending'
+play_services_id = 'com.google.android.gms'
 
 def is_vm_running(vm_index, vm_title):
     cmd = f"{memu} isvmrunning -i {vm_index}"
@@ -105,6 +107,13 @@ def start_game(vm_index, vm_title):
 
 def kill_app(vm_index):
     cmd = f"{memu} -i {vm_index} adb shell am force-stop {game_identifier}"
+    handle_run_command(cmd, True)
+
+
+def clear_caches(vm_index):
+    cmd = f"{memu} -i {vm_index} adb shell pm clear {play_game_id}"
+    handle_run_command(cmd)
+    cmd = f"{memu} -i {vm_index} adb shell pm clear {play_services_id}"
     handle_run_command(cmd)
 
 

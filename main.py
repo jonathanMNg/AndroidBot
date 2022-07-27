@@ -20,14 +20,14 @@ def recruit_troops(vm_name):
 def gather_resources(level, gather_type, resource_level, vm_name):
     vm.handle_if_game_not_open(vm_index, vm_name)
 
-    if gather_type == 'farm':
+    if gather_type != '' and int(level) < 15:
+        game.handle_gather_resources(vm_index, 'oil', resource_level)
+    elif gather_type == 'farm':
         game.handle_gather_resources(vm_index, 'farm', resource_level)
-    if gather_type == 'steel':
+    elif gather_type == 'steel':
         game.handle_gather_resources(vm_index, 'steel', resource_level)
     elif gather_type == 'mineral':
         game.handle_gather_resources(vm_index, 'mineral', resource_level)
-    elif gather_type != '' and level < 15:
-        game.handle_gather_resources(vm_index, 'oil', resource_level)
     else:
         game.handle_gather_resources(vm_index, 'oil', resource_level)
 
@@ -37,7 +37,7 @@ def check_limit_instances():
             instances_running_count = vm.count_tasks('MEmu.exe')
             print("current instances: " + str(instances_running_count))
             if instances_running_count >= 1:
-                time.sleep(30)
+                time.sleep(60)
             else:
                 break
         return
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--gather-resources-type', '-g', help='Resources type to gather', choices=['oil', 'farm', 'steel', 'mineral'], default='oil')
     parser.add_argument('--config-file', '-f', help='Config file for accounts [.\\config.json]', required=True)
-    parser.add_argument('--command', '-c', help='Single command automation', choices=['withdraw', 'explore', 'bonus'])
+    parser.add_argument('--command', '-c', help='Single command automation', choices=['withdraw', 'explore', 'instant'])
     parser.add_argument('--wait', '-w', help='Wait until runtime')
     parser.add_argument('--restart', '-r', help='Restart Mode, set repeat to only 1', action='store_true')
     args = parser.parse_args()
@@ -87,6 +87,9 @@ if __name__ == "__main__":
 
     already_run_once = False
     while True:
+        if not already_run_once or not args.restart:
+            vm.clear_caches(vm_index)
+            pass
         check_limit_instances()
         vm.handle_if_game_not_open(vm_index, config['vm_name'])
         for i, email in enumerate(config['accounts']):
