@@ -113,8 +113,10 @@ def kill_app(vm_index):
 def clear_caches(vm_index):
     cmd = f"{memu} -i {vm_index} adb shell pm clear {play_game_id}"
     handle_run_command(cmd)
+    time.sleep(5)
     cmd = f"{memu} -i {vm_index} adb shell pm clear {play_services_id}"
     handle_run_command(cmd)
+    time.sleep(5)
 
 
 def restart_app(vm_index, vm_title):
@@ -124,13 +126,15 @@ def restart_app(vm_index, vm_title):
     time.sleep(10)
 
 
-def handle_if_game_not_open(vm_index, vm_title):
+def handle_if_game_not_open(vm_index, vm_title, not_already_run_once_or_restarts=False):
     if not is_vm_running(vm_index, vm_title):
         if is_vm_window_open(vm_title):
             force_close_window(vm_title)
             time.sleep(2)
         start_vm(vm_index)
         time.sleep(20)
+        if not_already_run_once_or_restarts:
+            clear_caches(vm_index)
         return handle_if_game_not_open(vm_index, vm_title)
 
     if not is_game_open(vm_index):

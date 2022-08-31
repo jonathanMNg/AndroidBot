@@ -25,9 +25,15 @@ def gather_resources(level, gather_type, resource_level, vm_name):
     elif gather_type == 'farm':
         game.handle_gather_resources(vm_index, 'farm', resource_level)
     elif gather_type == 'steel':
-        game.handle_gather_resources(vm_index, 'steel', resource_level)
+        if int(level) < 15:
+            game.handle_gather_resources(vm_index, 'oil', resource_level)
+        else:
+            game.handle_gather_resources(vm_index, 'steel', resource_level)
     elif gather_type == 'mineral':
-        game.handle_gather_resources(vm_index, 'mineral', resource_level)
+        if int(level) < 20:
+            game.handle_gather_resources(vm_index, 'steel', resource_level)
+        else:
+            game.handle_gather_resources(vm_index, 'mineral', resource_level)
     else:
         game.handle_gather_resources(vm_index, 'oil', resource_level)
 
@@ -37,7 +43,7 @@ def check_limit_instances():
             instances_running_count = vm.count_tasks('MEmu.exe')
             print("current instances: " + str(instances_running_count))
             if instances_running_count >= 1:
-                time.sleep(60)
+                time.sleep(120)
             else:
                 break
         return
@@ -87,11 +93,10 @@ if __name__ == "__main__":
 
     already_run_once = False
     while True:
-        if not already_run_once or not args.restart:
-            vm.clear_caches(vm_index)
-            pass
         check_limit_instances()
-        vm.handle_if_game_not_open(vm_index, config['vm_name'])
+        not_already_run_once_or_restarts = not already_run_once or args.restart
+        vm.handle_if_game_not_open(vm_index, config['vm_name'], not_already_run_once_or_restarts)
+
         for i, email in enumerate(config['accounts']):
             for j, account in enumerate(email):
                 account = Account(account['name'], account['level'], account['target_upgrade'], account['target_research'])
@@ -99,7 +104,7 @@ if __name__ == "__main__":
 
                 print(account.name)
                 account_level = int(account.level)
-                time.sleep(5)
+                time.sleep(10)
                 if account_level >= 19:
                     repeat = 4
                 elif account_level >= 12:
@@ -135,6 +140,7 @@ if __name__ == "__main__":
                 vm.restart_app(vm_index, config['vm_name'])
         if last_hour + interval_hour <= current_hour or current_hour + interval_hour < last_hour:
             last_hour = current_hour
+            vm.clear_caches(vm_index)
         vm.stop_vm(vm_index, config['vm_name'])
         current_hour = datetime.datetime.now().hour
         already_run_once = True
